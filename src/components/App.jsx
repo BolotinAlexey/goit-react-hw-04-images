@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Wrap } from 'components/App.styled.js';
 
 import { PER_PAGE } from 'services/constants';
@@ -10,49 +10,36 @@ import Loader from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
 
 function App() {
-  // state = {
-  //   // resesarch word
-  //   word: '',
-
-  //   // array of gallery objects
-  //   gallery: [],
-
-  //   //flag shower of spiner
-  //   isLoading: false,
-
-  //   //flag shower button of 'read-more'
-  //   isMore: false,
-
-  //   // {img:refer to large img,alt:text of attribute alt}
-  //   modalImg: null,
-  // };
-
   const [word, setWord] = useState(''); // resesarch word
+
   const [gallery, setGallery] = useState([]); // array of gallery objects
+
   const [isLoading, setisLoading] = useState(false); //flag shower of spiner
+
   const [isMore, setIsMore] = useState(false); //flag shower button of 'read-more'
+
   const [modalImg, setModalImg] = useState(null); // {img:refer to large img,alt:text of attribute alt}
 
-  // componentDidUpdate(_, { gallery }) {
-  //   if (this.state.gallery.length === 0) window.scrollTo({ top: 0 });
-  //   if (gallery.length !== this.state.gallery.length)
-  //     window.scrollTo({
-  //       top: document.querySelector('body').scrollHeight,
-  //       behavior: 'smooth',
-  //     });
-  // }
+  useEffect(() => {
+    if (gallery.length === 0) window.scrollTo({ top: 0 });
+
+    window.scrollTo({
+      top: document.querySelector('body').scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [gallery]);
 
   // helper function for working with request api
   const requestToApi = async (word, currentGallery) => {
     setisLoading(true);
     try {
-      const { reqGallery, isMore } = await API.readData(
+      const { reqGallery, isMoreApi } = await API.readData(
         word,
         Math.floor(currentGallery.length / PER_PAGE) + 1
       );
 
       setGallery([...currentGallery, ...reqGallery]);
-      setIsMore(isMore);
+      setIsMore(isMoreApi);
       setWord(word);
     } catch (error) {
       console.error(error);
@@ -78,11 +65,6 @@ function App() {
     requestToApi(word, gallery);
   };
 
-  // click to element of gallery
-  const onClickToGallery = modalImg => {
-    setModalImg(modalImg);
-  };
-
   // close modal window
   const closeModal = () => setModalImg(null);
 
@@ -98,11 +80,16 @@ function App() {
       {/* search bar */}
       <Searchbar onSubmit={handlerSubmit} isDisabled={isLoading} />
       {/* gallery list */}
-      <ImageGallery gallery={gallery} onClickToGallery={onClickToGallery} />
+      <ImageGallery
+        gallery={gallery}
+        onClickToGallery={modalImg => setModalImg(modalImg)}
+      />
       {/* loader */}
       <Loader visible={isLoading} />
       {/* button 'Load more' */}
-      {isMore && <Button isDisabled={isLoading} onClick={handlerMore} />}
+      {isMore && !isLoading && (
+        <Button isDisabled={isLoading} onClick={handlerMore} />
+      )}
     </Wrap>
   );
 }
