@@ -1,6 +1,6 @@
 {
-  "name": "goit-react-hw-04-image-finder",
-  "homepage": "https://bolotinalexey.github.io/goit-react-hw-04-image-finder/",
+  "name": "goit-react-hw-04-image",
+  "homepage": "https://bolotinalexey.github.io/goit-react-hw-04-image/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,12 +46,12 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://bolotinalexey.github.io/goit-react-hw-04-image-finder.git"
+    "url": "git+https://bolotinalexey.github.io/goit-react-hw-04-image.git"
   },
   "keywords": [],
   "author": "Oleksii Bolotin",
   "license": "ISC",
   "bugs": {
-    "url": "https://bolotinalexey.github.io/goit-react-hw-04-image-finder/issues"
+    "url": "https://bolotinalexey.github.io/goit-react-hw-04-image/issues"
   }
 }

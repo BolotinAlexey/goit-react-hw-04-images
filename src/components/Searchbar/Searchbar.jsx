@@ -4,24 +4,20 @@ import PropTypes from 'prop-types';
 import { Header } from './Searchbar.styled';
 import { FaSearch, FaRegWindowClose } from 'react-icons/fa';
 
-function Searchbar(props) {
+function Searchbar({ onSubmit, isDisabled }) {
   const [value, setValue] = useState('');
-
-  const onReset = () => setValue('');
 
   const handlerSubmit = e => {
     e.preventDefault();
     setValue('');
     const word = e.target.elements[1].value.trim();
-    if (word) props.onSubmit(word);
+    if (word) onSubmit(word);
   };
-
-  const onChange = e => setValue(e.target.value);
 
   return (
     <Header>
       <form onSubmit={handlerSubmit}>
-        <button type="submit" disabled={props.isDisabled}>
+        <button type="submit" disabled={isDisabled}>
           <FaSearch size={20} className="icon" />
         </button>
 
@@ -30,11 +26,11 @@ function Searchbar(props) {
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
-          onChange={onChange}
+          onChange={e => setValue(e.target.value)}
           value={value}
         />
 
-        <button onClick={onReset} type="reset">
+        <button onClick={() => setValue('')} type="reset">
           <FaRegWindowClose
             className="icon"
             size={20}
